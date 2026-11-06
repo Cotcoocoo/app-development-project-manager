@@ -1,0 +1,8 @@
+# Normalize text files and prevent accidental line-ending churn
+* text=auto eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Treat packaged artifacts as binary if a maintainer creates a release asset
+*.zip binary

@@ -1,0 +1,32 @@
+name: Feature request
+description: Propose a reusable improvement to the Skill.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Propose a general-purpose improvement. Do not include confidential project plans or private data.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or workflow gap
+      description: What reusable project-management problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the suggested guidance, decision rule, or template behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Example prompts or scenarios
+      description: Provide generic examples that show when this should apply.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe any workaround or alternative approach.

@@ -1,0 +1,46 @@
+name: Validate repository
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Skill metadata and repository hygiene
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f SKILL.md
+          test -f README.md
+          test -f LICENSE
+          test -f CONTRIBUTING.md
+          test -f SECURITY.md
+          test -f .github/ISSUE_TEMPLATE/bug_report.yml
+          test -f .github/ISSUE_TEMPLATE/feature_request.yml
+          test -f .github/PULL_REQUEST_TEMPLATE.md
+
+          head -n 1 SKILL.md | grep -qx -- '---'
+          sed -n '1,20p' SKILL.md | grep -Eq '^name: app-development-project-manager$'
+          sed -n '1,20p' SKILL.md | grep -Eq '^description: .+'
+          sed -n '1,20p' SKILL.md | grep -Eq '^agent_created: true$'
+
+          if grep -RInE --exclude-dir=.git --exclude=validate.yml '(D:\\|C:\\|/Users/|/home/|BEGIN [A-Z ]*PRIVATE KEY|AKIA[0-9A-Z]{16})' .; then
+            echo 'Potential private path or credential pattern found.' >&2
+            exit 1
+          fi
+
+      - name: Check local Markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
